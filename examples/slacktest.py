@@ -15,7 +15,7 @@ LED_DMA        = 10      # DMA channel to use for generating signal (try 10)
 LED_BRIGHTNESS = 255     # Set to 0 for darkest and 255 for brightest
 LED_INVERT     = False   # True to invert the signal (when using NPN transistor level shift)
 LED_CHANNEL    = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
-slack_token = 'xoxb-148478909031-464797514263-4A7M1Fg8TFb7S1FeoQPCx74j'
+slack_token = os.environ["SLACK_TOKEN"]
 
 def colorWipe(strip, color, wait_ms=50, reverse=False):
     """Wipe color across display a pixel at a time."""
