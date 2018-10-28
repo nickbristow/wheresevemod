@@ -210,9 +210,6 @@ def build_message(mes):
         mes_matrix[index].extend([0])
   return mes_matrix
 
-# print(build_message('TEST'))
-
-
 for row in build_message('hello world'):
   row_string = ''
   for col in row:
