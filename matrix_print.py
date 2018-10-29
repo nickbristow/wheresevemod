@@ -1,4 +1,5 @@
 import os
+import time
 
 alphabit = {
   "A": [
@@ -210,9 +211,35 @@ def build_message(mes):
         mes_matrix[index].extend([0])
   return mes_matrix
 
-for row in build_message('hello world'):
-  row_string = ''
-  for col in row:
-    char = col if col == 1 else ' '
-    row_string = row_string + str(char) + ' '
-  print(row_string)
+def print_message(mes):
+  display = [
+    [" ", " "," ", " "," ", " "," ", " "," ", " "],
+    [" ", " "," ", " "," ", " "," ", " "," ", " "],
+    [" ", " "," ", " "," ", " "," ", " "," ", " "],
+    [" ", " "," ", " "," ", " "," ", " "," ", " "],
+    [" ", " "," ", " "," ", " "," ", " "," ", " "]
+  ]
+  message = build_message(mes)
+  while len(message[0]) > 0:
+    display_message(display)
+    time.sleep(0.2)
+    display = shift_left(display)
+    for index, row in enumerate(message):
+      display[index][-1] = row.pop(0)
+
+def shift_left(display):
+  for row in display:
+    row.pop(0)
+    row.append(' ')
+  return display
+
+def display_message(display):
+  for row in display:
+    row_string = ''
+    for col in row:
+      char = col if col == 1 else ' '
+      row_string = row_string + str(char) + ' '
+    print(row_string)
+
+
+print_message("Hello world")
