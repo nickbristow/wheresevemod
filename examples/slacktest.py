@@ -13,7 +13,7 @@ LED_PIN        = 18      # GPIO pin connected to the pixels (18 uses PWM!).
 #LED_PIN        = 10      # GPIO pin connected to the pixels (10 uses SPI /dev/spidev0.0).
 LED_FREQ_HZ    = 800000  # LED signal frequency in hertz (usually 800khz)
 LED_DMA        = 10      # DMA channel to use for generating signal (try 10)
-LED_BRIGHTNESS = 50     # Set to 0 for darkest and 255 for brightest
+LED_BRIGHTNESS = 10     # Set to 0 for darkest and 255 for brightest
 LED_INVERT     = False   # True to invert the signal (when using NPN transistor level shift)
 LED_CHANNEL    = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
 slack_token = os.environ["SLACK_TOKEN"]
@@ -61,6 +61,9 @@ def update_users(strip):
     users = sc.api_call(
         "users.list"
         )
+    nightRider(strip)
+    colorWipe(strip, Color(0,0,0), 1)
+    
     for u in users["members"]:
         #if 'joe' in u["name"]:
             #print(u)
@@ -111,9 +114,7 @@ if __name__ == '__main__':
 
         while True:
             print ('Getting Users')
-           # for i in range(1,10): 
-            #    nightRider(strip)
-             #   nightRider(strip, False)
+            
             update_users(strip)
             time.sleep(10)
 
