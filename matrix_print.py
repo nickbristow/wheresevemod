@@ -66,11 +66,11 @@ alphabit = {
   [0,1,1,0]
   ],
   "H": [
-  [0,0,0],
-  [1,0,1],
-  [1,1,1],
-  [1,0,1],
-  [0,0,0]
+  [1,0,0,1],
+  [1,0,0,1],
+  [1,1,1,1],
+  [1,0,0,1],
+  [1,0,0,1]
   ],
   "I": [
   [1],
@@ -266,7 +266,7 @@ def shift_left(display):
 def display_message_on_strip(strip, display):
     for row_i, row in enumerate(display):
         for col_i, col in enumerate(row):
-          char = RandomColor() if col == 1 else Color(0,0,0)
+          char = Color(255,0,0) if col == 1 else Color(0,0,0)
           pixel_i = light_array[row_i][col_i]
           strip.setPixelColor(pixel_i, char)
     strip.show()
@@ -302,6 +302,6 @@ if __name__ == '__main__':
     try:
 
         while True:
-            print_message('hello hugh     ', strip)
+            print_message('Hello world     ', strip)
     except KeyboardInterrupt:
         colorWipe(strip, Color(0,0,0), 10)
