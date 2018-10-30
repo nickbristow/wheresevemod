@@ -13,7 +13,7 @@ LED_PIN        = 18      # GPIO pin connected to the pixels (18 uses PWM!).
 #LED_PIN        = 10      # GPIO pin connected to the pixels (10 uses SPI /dev/spidev0.0).
 LED_FREQ_HZ    = 800000  # LED signal frequency in hertz (usually 800khz)
 LED_DMA        = 10      # DMA channel to use for generating signal (try 10)
-LED_BRIGHTNESS = 10     # Set to 0 for darkest and 255 for brightest
+LED_BRIGHTNESS = 50     # Set to 0 for darkest and 255 for brightest
 LED_INVERT     = False   # True to invert the signal (when using NPN transistor level shift)
 LED_CHANNEL    = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
 slack_token = os.environ["SLACK_TOKEN"]
@@ -72,13 +72,19 @@ def update_users(strip):
             print(name)
             status = u['profile']['status_text']
             if status == 'Working remotely':
-                strip.setPixelColor(EXCELLA_SLACK_USERS[name], Color(0, 0, 255))
+                strip.setPixelColor(EXCELLA_SLACK_USERS[name], Color(30, 30, 255))
                 strip.show()
             elif status == 'In the office':
                 strip.setPixelColor(EXCELLA_SLACK_USERS[name], Color(0, 255, 0))
                 strip.show()
             elif status == 'Vacationing':
                 strip.setPixelColor(EXCELLA_SLACK_USERS[name], Color(127, 0, 255))
+                strip.show()
+            elif status == 'Out Sick':
+                strip.setPixelColor(EXCELLA_SLACK_USERS[name], Color(255, 0, 0))
+                strip.show()
+            elif status == 'Can be reached by phone/slack':
+                strip.setPixelColor(EXCELLA_SLACK_USERS[name], Color(255, 255, 0))
                 strip.show()
             else:
                 pcolor = Color(255, 255, 255) if check_user_presence(u["id"]) == "active" else Color(194, 76, 0)
@@ -116,7 +122,7 @@ if __name__ == '__main__':
             print ('Getting Users')
             
             update_users(strip)
-            time.sleep(10)
+            time.sleep(60)
 
     except KeyboardInterrupt:
         if args.clear:
