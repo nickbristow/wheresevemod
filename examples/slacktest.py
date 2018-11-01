@@ -61,6 +61,9 @@ def update_users(strip):
     users = sc.api_call(
         "users.list"
         )
+    if 'members' not in users:
+        print('user.list call failed')
+        return False
     nightRider(strip)
     colorWipe(strip, Color(0,0,0), 1)
     
@@ -78,7 +81,7 @@ def update_users(strip):
                 strip.setPixelColor(EXCELLA_SLACK_USERS[name], Color(0, 255, 0))
                 strip.show()
             elif status == 'Vacationing':
-                strip.setPixelColor(EXCELLA_SLACK_USERS[name], Color(127, 0, 255))
+                strip.setPixelColor(EXCELLA_SLACK_USERS[name], Color(204, 102, 0))
                 strip.show()
             elif status == 'Out Sick':
                 strip.setPixelColor(EXCELLA_SLACK_USERS[name], Color(255, 0, 0))
@@ -87,7 +90,7 @@ def update_users(strip):
                 strip.setPixelColor(EXCELLA_SLACK_USERS[name], Color(255, 255, 0))
                 strip.show()
             else:
-                pcolor = Color(255, 255, 255) if check_user_presence(u["id"]) == "active" else Color(194, 76, 0)
+                pcolor = Color(255, 255, 255) if check_user_presence(u["id"]) == "active" else Color(0, 0, 0)
                 strip.setPixelColor(EXCELLA_SLACK_USERS[name], pcolor)
                 strip.show()
 
@@ -96,7 +99,7 @@ def check_user_presence(user_id):
         "users.getPresence",
         user=user_id
         )
-    return presence["presence"]
+    return presence["presence"] if 'presence' in presence else ''
 
 # Main program logic follows:
 if __name__ == '__main__':
@@ -123,9 +126,11 @@ if __name__ == '__main__':
 
         while True:
             print ('Getting Users')
-            
+            print(sc)
+            time.sleep(5)
+            print(sc)
             update_users(strip)
-            time.sleep(60)
+            time.sleep(300)
 
     except KeyboardInterrupt:
         if args.clear:
