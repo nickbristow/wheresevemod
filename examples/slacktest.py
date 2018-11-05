@@ -72,27 +72,27 @@ def update_users(strip):
             #print(u)
         name = u["profile"]["real_name_normalized"]
         if name in EXCELLA_SLACK_USERS:
-            print(name)
             status = u['profile']['status_text']
-            if status == 'Working remotely':
+            presence = check_user_presence(u['id'])
+            if presence != 'active' and status != 'Vacationing':
+                print(name + 'is ' + presence)
+                strip.setPixelColor(EXCELLA_SLACK_USERS[name], Color(0,0,0))
+            elif status == 'Working remotely':
+                print(name + "is working remotely")
                 strip.setPixelColor(EXCELLA_SLACK_USERS[name], Color(30, 30, 255))
-                strip.show()
             elif status == 'In the office':
+                print(name + "is in the office")
                 strip.setPixelColor(EXCELLA_SLACK_USERS[name], Color(0, 255, 0))
-                strip.show()
             elif status == 'Vacationing':
+                print(name + "is vacationing")
                 strip.setPixelColor(EXCELLA_SLACK_USERS[name], Color(204, 102, 0))
-                strip.show()
             elif status == 'Out Sick':
+                print(name + 'is out sick')
                 strip.setPixelColor(EXCELLA_SLACK_USERS[name], Color(255, 0, 0))
-                strip.show()
             elif status == 'Can be reached by phone/slack':
+                print(name + 'can be reached by phone slack')
                 strip.setPixelColor(EXCELLA_SLACK_USERS[name], Color(255, 255, 0))
-                strip.show()
-            else:
-                pcolor = Color(255, 255, 255) if check_user_presence(u["id"]) == "active" else Color(0, 0, 0)
-                strip.setPixelColor(EXCELLA_SLACK_USERS[name], pcolor)
-                strip.show()
+            strip.show()
 
 def check_user_presence(user_id):
     presence = sc.api_call(
@@ -100,6 +100,19 @@ def check_user_presence(user_id):
         user=user_id
         )
     return presence["presence"] if 'presence' in presence else ''
+
+def blink_status_light(strip, range_limit):
+    sleep_time = 0.5
+    for i in range(range_limit):
+        if i > (range_limit * 0.75):
+            sleep_time = 0.1
+        strip.setPixelColor(0, Color(255, 0, 0))
+        strip.show()
+        time.sleep(sleep_time)
+        strip.setPixelColor(0, Color(0,0,0))
+        strip.show()
+        time.sleep(sleep_time)
+    strip.setPixelColor(0,Color(0,255,0))
 
 # Main program logic follows:
 if __name__ == '__main__':
@@ -130,7 +143,7 @@ if __name__ == '__main__':
             time.sleep(5)
             print(sc)
             update_users(strip)
-            time.sleep(300)
+            blink_status_light(strip, 200)
 
     except KeyboardInterrupt:
         if args.clear:
