@@ -66,6 +66,8 @@ def update_users(strip):
         return False
     nightRider(strip)
     colorWipe(strip, Color(0,0,0), 1)
+    strip.setPixelColor(0,Color(0,255,0))
+    strip.show()
     
     for u in users["members"]:
         #if 'joe' in u["name"]:
@@ -106,7 +108,7 @@ def blink_status_light(strip, range_limit):
     for i in range(range_limit):
         if i > (range_limit * 0.75):
             sleep_time = 0.1
-        strip.setPixelColor(0, Color(255, 0, 0))
+        strip.setPixelColor(0, Color(100, 0, 0))
         strip.show()
         time.sleep(sleep_time)
         strip.setPixelColor(0, Color(0,0,0))
